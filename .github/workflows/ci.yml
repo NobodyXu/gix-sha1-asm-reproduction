@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  merge_group:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/just-setup
+      env:
+        # just-setup use binstall to install sccache,
+        # which works better when we provide it with GITHUB_TOKEN.
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: setup rust toolchain
+      run: |
+        rustup toolchain install stable --no-self-update --profile minimal
+        rustup default stable
+
+    - uses: Swatinem/rust-cache@v2
+
+    - run: just build

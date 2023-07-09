@@ -1,0 +1,10 @@
+[package]
+name = "gix-sha1-asm-reproduction"
+version = "0.1.0"
+edition = "2021"
+license = "Apache"
+
+publish = false
+
+[dependencies]
+gix = { version = "0.48.0", features = ["blocking-http-transport-reqwest-rust-tls", "max-performance"] }
