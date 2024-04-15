@@ -7,7 +7,7 @@ license = "Apache"
 publish = false
 
 [dependencies]
-gix = { version = "0.48.0", features = ["blocking-http-transport-reqwest-rust-tls", "max-performance"] }
+gix = { version = "0.62.0", features = ["blocking-http-transport-reqwest-rust-tls", "max-performance"] }
 
 [profile.release]
 opt-level = "z"
